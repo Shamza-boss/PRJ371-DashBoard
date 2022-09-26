@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <title>ML tester</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link active" aria-current="page" href="/test">Upload Image</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <h1>Welcome to the Image upload</h1>
+    <form  autocomplete="off" action="/TestImage" Method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFile" class="form-label" >Default file input example</label>
+        <input class="form-control" type="file" name='file' id="formFile" >
+      </div>
+      <button class="btn btn-primary" name="filename" type="submit">Submit</button>
+    </form>
+    <!-- <form  autocomplete="off" action="http://localhost:8081/ML/Prediction" Method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFile" class="form-label" >Default file input example</label>
+        <input class="form-control" type="file" name='data' id="formFile" >
+      </div>
+      <button class="btn btn-primary" name="filename" type="submit">Submit</button>
+    </form> -->
+    
+      <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+</body>
+</html>
