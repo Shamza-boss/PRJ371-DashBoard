@@ -22,22 +22,42 @@
           </div>
         </div>
       </nav>
-    <h1>Welcome to the Image upload</h1>
-    <form  autocomplete="off" action="/TestImage" Method="POST" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="formFile" class="form-label" >Default file input example</label>
-        <input class="form-control" type="file" name='file' id="formFile" >
+      <div class="col d-flex justify-content-center">
+        <div class="card text-center" style="margin: 1%; width:100%; border: none !important; ">
+          <h1>Welcome to the Image upload</h1>
+          <form  autocomplete="off" action="/TestImage" Method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="formFile" class="form-label" >Click "Choose File" to upload your picture</label>
+              <input class="form-control" type="file" name='file' id="formFile" >
+            </div>
+            <button class="btn btn-primary" name="filename" type="submit">Submit</button>
+          </form>
+          
+        </div>
       </div>
-      <button class="btn btn-primary" name="filename" type="submit">Submit</button>
-    </form>
-    <!-- <form  autocomplete="off" action="http://localhost:8081/ML/Prediction" Method="POST" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="formFile" class="form-label" >Default file input example</label>
-        <input class="form-control" type="file" name='data' id="formFile" >
-      </div>
-      <button class="btn btn-primary" name="filename" type="submit">Submit</button>
-    </form> -->
+      
     
+    
+    <% if(result == null){%>
+      <h4>Please upload a picture to test</h4>
+    <%}else{ %>
+      <div class="col d-flex justify-content-center">
+        <div class="card text-center" style="margin: 1%; width:50%;">
+          <div class="card-header">
+            Result Section
+          </div>
+          <div class="card-body ">
+            
+            <h6 class="card-subtitle mb-2 text-muted"><%= result.prediction.Plant %> </h6>
+            <p class="card-text">Condition of Plant: <%= result.prediction.Condition %>, <br>confidence level: <%= (parseFloat(result.prediction.confidence_level)*100).toFixed(2) %>%</p>
+          </div>
+          <div class="card-footer text-muted">
+            Testing
+          </div>
+        </div>
+      </div>
+    
+   <% } %>
       <script type="text/javascript" src="./js/bootstrap.min.js"></script>
 </body>
 </html>

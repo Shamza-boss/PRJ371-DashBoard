@@ -33,8 +33,7 @@ let upload = multer({
 
 
 app.use(express.static(__dirname + '/public'));
-app.set('view engine', 'ejs')
-//app.use(upload.array()); 
+app.set('view engine', 'ejs');
 
 
 app.get('/', (req, res)=> {
@@ -42,64 +41,43 @@ app.get('/', (req, res)=> {
 });
 
 app.get('/test', (req, res)=> {
-    res.render('ImageUp');
+    res.render('ImageUp', {result: null});
 });
 
 
 app.post('/TestImage',upload.single('file'), (req, res)=> {
-  console.log("line 49")
   if(req.file){
-   let resData = TestAgainstAPI(req);
    //console.log(resData);
-   let respond = ()=>{
-    res.send(resData);
-   }
 
-   setTimeout(respond, 600);
+   //Generate new FormConstructor
+   let form = new FormData();
+   //generate file form from the files which we have uploaded and stored
+   form.append('data', fs.createReadStream(req.file.destination+req.file.filename))
+ 
+   //send new form to api on the specified path
+   axios({ 
+     method: 'POST',
+     url:'http://localhost:8081/ML/Prediction',
+     data: form
+   })
+   .then(response => {
+     console.log(response.data)
+     res.render('ImageUp',{result: response.data});
+   })
+   .catch(error => {
+     console.log(error.message);
+   })
+ 
+   //deletes file after upload to keep storage clear under uploads
+   let deleteFile = ()=>{
+     fs.rmSync(req.file.destination+req.file.filename, { recursive: true })
+   }
+   setTimeout(deleteFile,500);
     
   };
   
 });
 
-//fix API query
-let TestAgainstAPI = (dataI) => {
-  let result;
-
-  //Generate new FormConstructor
-  let form = new FormData();
-
-  //generate file form from the files which we have uploaded and stored
-  form.append('data', fs.createReadStream(dataI.file.destination+dataI.file.filename))
-
-  //send new form to api on the specified path
-  axios({ 
-    method: 'POST',
-    url:'http://localhost:8081/ML/Prediction',
-    data: form
-  })
-  .then(res => {
-    result = res.data;
-    //console.log(result);
-  })
-  .catch(error => {
-    result = error;
-    //console.log(result);
-  })
-  let getResult = ()=>{
-    console.log(result);
-    return result;
-  }
-  setTimeout(getResult,500);
-
-  //deletes file after upload to keep storage clear under uploads
-  let deleteFile = ()=>{
-    fs.rmSync(dataI.file.destination+dataI.file.filename, { recursive: true })
-  }
-  setTimeout(deleteFile,500);
-}
-
-  
-
 app.listen(port, ()=> {
-  console.log('Your app is listening on port',port);
+  console.log(`Your app is listening on localhost:${port}`);
 });
