@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-let port = process.env.PORT;
-
 const express = require('express');
 const axios = require('axios');
 const FormData = require('form-data');
@@ -35,9 +33,47 @@ let upload = multer({
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
+let EnvDomain = process.env.APIDOMAIN||'http://127.0.0.1:5000';
+let EnvPort = process.env.PORT||8080;
 
 app.get('/', (req, res)=> {
-  res.render('DashBoard');
+  res.render('index');
+});
+
+app.get('/Dashboard', (req, res)=>{
+
+  axios({ 
+    method: 'GET',
+    url:EnvDomain+'/api/plants?ascending=true'
+  })
+  .then(response => {
+    let number = Math.floor(Math.random() * response.data.length);
+    console.log(number);
+    res.render('dashboardNew.ejs', {allplants: response.data, topPlant: response.data[number], result: null});
+  })
+  .catch(error => {
+    console.log(error);
+     res.render("Handler", {error: error.message})
+  })
+  
+});
+
+app.get('/Dashboard/:PlantID', (req, res)=> {
+  
+  //Renders website with plant chosen on dashboard
+  axios({ 
+    method: 'GET',
+    url:EnvDomain+'/api/plants?ascending=true'
+  })
+  .then(response => {
+    let QueryPlant = req.params.PlantID;
+    let number = parseInt(QueryPlant) - 1;
+    res.render('dashboardNew.ejs', {allplants: response.data, topPlant: response.data[number], result: null});
+  })
+  .catch(error => {
+    console.log(error);
+     res.render("Handler", {error: error.message})
+  })
 });
 
 app.get('/test', (req, res)=> {
@@ -57,16 +93,33 @@ app.post('/TestImage',upload.single('file'), (req, res)=> {
    //send new form to api on the specified path
    axios({ 
      method: 'POST',
-     url:'http://localhost:8081/ML/Prediction',
+     url:EnvDomain+'/ML/Prediction',
      data: form
    })
-   .then(response => {
-     console.log(response.data)
-     res.render('ImageUp',{result: response.data});
+   .then(response1 => {
+     console.log(response1.data)
+     ///////////// Start: Render Dashboard content //////////
+     axios({ 
+      method: 'GET',
+      url:EnvDomain+'/api/plants?ascending=true'
+    })
+    .then(response => {
+      let QueryPlant = req.params.PlantID;
+      let number = parseInt(QueryPlant) - 1;
+      res.render('dashboardNew.ejs', {allplants: response.data, topPlant: response.data[number], result: response1.data});
+    })
+    .catch(error => {
+      console.log(error);
+      res.render("Handler", {error: error.message})
+    })
+     ///////////// Start: Render Dashboard content //////////
    })
    .catch(error => {
-     console.log(error.message);
-   })
+     console.log(error);
+     res.render("Handler", {error: error.message})
+   });
+
+   
  
    //deletes file after upload to keep storage clear under uploads
    let deleteFile = ()=>{
@@ -78,6 +131,10 @@ app.post('/TestImage',upload.single('file'), (req, res)=> {
   
 });
 
-app.listen(port, ()=> {
-  console.log(`Your app is listening on localhost:${port}`);
+app.use((req, res)=>{
+res.status(404).render("404")
+})
+
+app.listen(EnvPort, ()=> {
+  console.log(`Your app is listening on localhost:${EnvPort}`);
 });
