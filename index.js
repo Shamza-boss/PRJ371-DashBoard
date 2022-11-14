@@ -87,11 +87,11 @@ app.post('/TestImage',upload.single('file'), (req, res)=> {
 
     form = new FormData();
    //generate file form from the files which we have uploaded and stored
-   form.append('image', fs.createReadStream(req.file.destination+req.file.filename))
+   form.append('image', fs.createReadStream(__dirname+req.file.destination+req.file.filename))
  
    //deletes file after upload to keep storage clear under uploads
    let deleteFile = ()=>{
-    fs.rmSync(req.file.destination+req.file.filename, { recursive: true })
+    fs.rmSync(__dirname+req.file.destination+req.file.filename, { recursive: true })
   }
 
 //new/////////////////////////
