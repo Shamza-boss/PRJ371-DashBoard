@@ -48,7 +48,7 @@ app.get('/Dashboard', (req, res)=>{
   })
   .then(response => {
     let number = Math.floor(Math.random() * response.data.length);
-    console.log(number);
+    //console.log(number);
     res.render('dashboardNew.ejs', {allplants: response.data, topPlant: response.data[number], result: null});
   })
   .catch(error => {
@@ -82,50 +82,92 @@ app.get('/test', (req, res)=> {
 
 
 app.post('/TestImage',upload.single('file'), (req, res)=> {
+  let form;
   if(req.file){
-   //console.log(resData);
 
-   //Generate new FormConstructor
-   let form = new FormData();
+    form = new FormData();
    //generate file form from the files which we have uploaded and stored
-   form.append('data', fs.createReadStream(req.file.destination+req.file.filename))
- 
-   //send new form to api on the specified path
-   axios({ 
-     method: 'POST',
-     url:EnvDomain+'/ML/Prediction',
-     data: form
-   })
-   .then(response1 => {
-     console.log(response1.data)
-     ///////////// Start: Render Dashboard content //////////
-     axios({ 
-      method: 'GET',
-      url:EnvDomain+'/api/plants?ascending=true'
-    })
-    .then(response => {
-      let QueryPlant = req.params.PlantID;
-      let number = parseInt(QueryPlant) - 1;
-      res.render('dashboardNew.ejs', {allplants: response.data, topPlant: response.data[number], result: response1.data});
-    })
-    .catch(error => {
-      console.log(error);
-      res.render("Handler", {error: error.message})
-    })
-     ///////////// Start: Render Dashboard content //////////
-   })
-   .catch(error => {
-     console.log(error);
-     res.render("Handler", {error: error.message})
-   });
-
-   
+   form.append('image', fs.createReadStream(req.file.destination+req.file.filename))
  
    //deletes file after upload to keep storage clear under uploads
    let deleteFile = ()=>{
-     fs.rmSync(req.file.destination+req.file.filename, { recursive: true })
-   }
-   setTimeout(deleteFile,500);
+    fs.rmSync(req.file.destination+req.file.filename, { recursive: true })
+  }
+
+//new/////////////////////////
+let link1 = EnvDomain+'/api/plants?ascending=true';
+let link2 = EnvDomain+'/api/ML/Prediction';
+
+let request1 = axios.get(link1);
+let request2 = axios({method:'post',url: link2, data: form, params: { device_id: 10125909 }, headers: {'Content-Type': 'multipart/form-data' }});
+
+axios.all([request1, request2]).then(axios.spread((...responses)=>{
+  const responseOne = responses[0];//get
+  const responseTwo = responses[1];//post
+
+
+  if(responseTwo.data.prediction.Plant=="Apple"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[0], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Blueberry"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[1], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Cherry"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[2], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Corn"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[3], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Grape"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[4], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Orange"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[5], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Peach"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[6], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Bell pepper"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[7], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Potato"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[8], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Raspberry"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[9], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Soybean"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[10], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Squash"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[11], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Strawberry"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[12], result: responseTwo});
+
+  }else if(responseTwo.data.prediction.Plant=="Tomato"){
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[13], result: responseTwo});
+
+  }else{
+    let number = Math.floor(Math.random() * responseOne.data.length);
+    res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[number], result: responseTwo});
+  }
+  
+  //console.log("Form data",responseTwo);
+  //console.log("Response from API 1",number);
+ 
+})).catch(errors=>{
+  res.render("Handler", {error: errors.message})
+}).then(()=>{
+  deleteFile();
+})
+
+//new/////////////////////////
+
+
+   
+ 
+   
     
   };
   
