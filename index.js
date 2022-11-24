@@ -33,8 +33,12 @@ let upload = multer({
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
-let EnvDomain = process.env.APIDOMAIN||'http://127.0.0.1:5000';
-let EnvPort = process.env.PORT||8080;
+// let EnvDomain = process.env.APIDOMAIN||'http://127.0.0.1:5000';
+// let EnvPort = process.env.PORT||8080;
+
+let EnvDomain = process.env.APIDOMAIN;
+let EnvPort = process.env.PORT;
+
 
 app.get('/', (req, res)=> {
   res.render('index');
@@ -87,11 +91,11 @@ app.post('/TestImage',upload.single('file'), (req, res)=> {
 
     form = new FormData();
    //generate file form from the files which we have uploaded and stored
-   form.append('image', fs.createReadStream(__dirname+req.file.destination+req.file.filename))
+   form.append('image', fs.createReadStream(req.file.destination+req.file.filename))
  
    //deletes file after upload to keep storage clear under uploads
    let deleteFile = ()=>{
-    fs.rmSync(__dirname+req.file.destination+req.file.filename, { recursive: true })
+    fs.rmSync(req.file.destination+req.file.filename, { recursive: true })
   }
 
 //new/////////////////////////
