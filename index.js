@@ -8,13 +8,13 @@ const multer = require('multer');
 var fs = require('fs');
 
 
-let storage = multer.diskStorage({
-  destination: (req, file, cb)=>{
-    cb(null,"./public/uploads/");
-  },
-  filename: (req, file, cb)=>{
-    cb(null, Date.now()+file.originalname);
-  }
+let storage = multer.memoryStorage({
+  // destination: (req, file, cb)=>{
+  //   cb(null,"./public/uploads/");
+  // },
+  // filename: (req, file, cb)=>{
+  //   cb(null, Date.now()+file.originalname);
+  // }
 });
 
 let fileFilter = (req, file, cb)=>{
@@ -33,7 +33,7 @@ let upload = multer({
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
-// let EnvDomain = process.env.APIDOMAIN||'http://127.0.0.1:5000';
+// let EnvDomain = 'http://localhost:5000';//api
 // let EnvPort = process.env.PORT||8080;
 
 let EnvDomain = process.env.APIDOMAIN;
@@ -84,14 +84,19 @@ app.get('/test', (req, res)=> {
     res.render('ImageUp', {result: null});
 });
 
-
+//upload.single('file')
 app.post('/TestImage',upload.single('file'), (req, res)=> {
+  //console.log("req data", res.body);
+  console.log("FileBuffer", req.file)
   let form;
   if(req.file){
 
     form = new FormData();
    //generate file form from the files which we have uploaded and stored
-   form.append('image', fs.createReadStream(req.file.destination+req.file.filename))
+   //form.append('image', fs.createReadStream(req.data,req.file.filename))
+   //form.append('image', fs.createReadStream(req.file.destination+req.file.filename))
+  form.append('image', req.file.buffer, req.file.originalname)
+  //console.log("FileBuffer", req.file.buffer)
  
    //deletes file after upload to keep storage clear under uploads
    let deleteFile = ()=>{
@@ -108,7 +113,6 @@ let request2 = axios({method:'post',url: link2, data: form, params: { device_id:
 axios.all([request1, request2]).then(axios.spread((...responses)=>{
   const responseOne = responses[0];//get
   const responseTwo = responses[1];//post
-
 
   if(responseTwo.data.prediction.Plant=="Apple"){
     res.render('dashboardNew.ejs', {allplants: responseOne.data, topPlant: responseOne.data[0], result: responseTwo});
@@ -161,9 +165,11 @@ axios.all([request1, request2]).then(axios.spread((...responses)=>{
   //console.log("Response from API 1",number);
  
 })).catch(errors=>{
-  res.render("Handler", {error: errors.message})
+  //deleteFile();
+  res.render("Handler", {error: errors.message});
+ 
 }).then(()=>{
-  deleteFile();
+  //deleteFile();
 })
 
 //new/////////////////////////
