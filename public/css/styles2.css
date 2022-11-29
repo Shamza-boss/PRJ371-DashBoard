@@ -51,10 +51,12 @@
 html{
   scroll-behavior: smooth;
   font-family: Nunito;
+  font-size: 1.2rem;
 }
 h1,h2,p{
   margin: 0;
 }
+
 
 
 /*===== CLASS CSS ===== */
@@ -66,20 +68,9 @@ h1,h2,p{
   margin-bottom: var(--mb-4);
   text-align: center;
 }
-.section-title::after{
-  position: absolute;
-  content: "";
-  width: 64px;
-  height: 0.18rem;
-  left: 0;
-  right: 0;
-  margin: auto;
-  top: 2rem;
-  background-color: var(--first-color);
-}
 .section{
-  padding-top: 3rem;
-  padding-bottom: 2rem;
+  padding-top: 2% !important;
+  padding-bottom: 0.5% !important;
 }
 
 /*===== LAYOUT =====*/
@@ -122,7 +113,14 @@ h1,h2,p{
   background-color: #000;
   color:#000;
   font-weight: bold;
-  height: 50vh;
+  height: 94vh;
+}
+
+.projects{
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 2%;
+  padding-top: 2.5%;
 }
 
 @media screen and (min-width: 1440px) {
@@ -137,13 +135,39 @@ h1,h2,p{
     background-color: #000;
     color:#000;
     font-weight: bold;
-    height: 80vh;
+    height: 94vh;
   }
-  .col{
+  /* .col{
     margin-bottom: 12% !important;
+  } */
+  .card{
+    font-size: 1.5rem !important;
   }
 }
-
+@media screen and (max-width: 1157px) {
+  .home{
+    width: 100%;
+    padding: 10%;
+    text-align: center;
+    background-image: url("../img/DroneFarming.jpg");
+    background-position:right;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: #000;
+    color:#000;
+    font-weight: bold;
+    height: 94vh;
+  }
+  .col{
+    margin-bottom: 5% !important;
+  }
+  .card{
+    margin: 0% !important;
+  }
+  .projects{
+    padding: 5% !important;
+  }
+}
 .profile{
   border-radius: 50%;
   position: relative;
@@ -247,12 +271,3 @@ h1,h2,p{
 }
 
 
-/* ===== ABOUT =====*/
-.projects {
-  background-color: var(--bg-color);
-  padding: 10%;
-}
-
-.card{
-  margin: 5%;
-}
