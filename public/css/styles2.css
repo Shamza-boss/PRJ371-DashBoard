@@ -55,14 +55,6 @@ html{
 h1,h2,p{
   margin: 0;
 }
-ul{
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-a{
-  text-decoration: none;
-}
 
 
 /*===== CLASS CSS ===== */
@@ -110,65 +102,7 @@ a{
   background-image: url('img_girl.jpg');
 }
 
-/*===== NAV =====*/
-.nav{
-  height: var(--header-height);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: var(--font-semi);
-}
-@media screen and (max-width: 600px){
-  .nav__menu{
-    position: fixed;
-    top: var(--header-height);
-    right: -100%;
-    width: 70%;
-    height: 100%;
-    padding: 2rem;
-    background-color: orange;
-    transition: .5s;
-    
-  }
-}
-.nav__item{
-  margin-bottom: var(--mb-4);
-  color: white;
-  padding-right: 20px;
-}
-.nav__link{
-  position: relative;
-  color: white;
-}
-.nav__link:hover{
-  position: relative;
-}
-.nav__link:hover::after{
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 0.18rem;
-  left: 0;
-  top: 2rem;
-  background-color: orange;
-}
 
-.nav__toggle{
-  color: orange;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/*Active menu*/
-.active::after{
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 0.18rem;
-  left: 0;
-  top: 2rem;
-  background-color: orange;
-}
 
 
 /*=== Show menu ===*/
@@ -178,34 +112,36 @@ a{
 
 /*===== HOME =====*/
 .home{
-  row-gap: 1rem;
- 
-  background-size: cover;
-  
+  width: 100%;
+  padding: 10%;
+  text-align: center;
+  background-image: url("../img/DroneFarming.jpg");
+  background-position:bottom;
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-color: #000;
+  color:#000;
+  font-weight: bold;
+  height: 50vh;
 }
-.home__data{
-  align-self: center;
-}
-.home__title{
-  font-size: var(--big-font-size);
-  margin-bottom: var(--mb-5);
-  color: white;
-}
-.home__title-color{
-  color: green;
-}
-.home__social{
-  display: flex;
-  flex-direction: column;
-}
-.home__social-icon{
-  width: max-content;
-  margin-bottom: var(--mb-2);
-  font-size: 1.5rem;
-  color: white;
-}
-.home__social-icon:hover{
-  color: green;
+
+@media screen and (min-width: 1440px) {
+  .home{
+    width: 100%;
+    padding: 10%;
+    text-align: center;
+    background-image: url("../img/DroneFarming.jpg");
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: #000;
+    color:#000;
+    font-weight: bold;
+    height: 80vh;
+  }
+  .col{
+    margin-bottom: 12% !important;
+  }
 }
 
 .profile{
@@ -250,15 +186,15 @@ a{
 
 /* ===== FOOTER =====*/
 .footer{
-  background-color: rgb(56, 55, 55);
-  color: #fff;
+  background-color: #e3f2fd;
+  color: #000;
   text-align: center;
   font-weight: var(--font-semi);
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 .footer__title{
   margin-bottom: var(--mb-4);
-  color: orange;
+  color: #000;
 }
 .footer__social{
   margin-bottom: var(--mb-4);
@@ -287,44 +223,6 @@ a{
     top: 3rem;
   }
 
-  .nav{
-    height: calc(var(--header-height) + 1rem);
-  }
-  .nav__list{
-    display: flex;
-    padding-top: 0;
-  }
-  .nav__item{
-    margin-left: var(--mb-6);
-    margin-bottom: 0;
-  }
-  .nav__toggle{
-    display: none;
-  }
-  .nav__link{
-    color: var(--second-color);
-  }
-
-  .home{
-    height: 50vh;
-  }
-  .home__data{
-    align-self: flex-end;
-  }
-  .home__social{
-    padding-top: 0;
-    padding-bottom: 2.5rem;
-    flex-direction: row;
-    align-self: flex-end;
-  }
-  .home__social-icon{
-    margin-bottom: 0;
-    margin-right: var(--mb-4);
-  }
-  .home__img{
-    width: 457px;
-    bottom: 15%;
-  }
 
   .about__container, .skills__container{
     grid-template-columns: repeat(2,1fr);
@@ -348,85 +246,13 @@ a{
   }
 }
 
-@media screen and (min-width: 1024px) {
-  .bd-grid {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .home__img {
-    right: 10%;
-  }
-}
-
 
 /* ===== ABOUT =====*/
 .projects {
   background-color: var(--bg-color);
-  padding: 32px 0;
-  margin-top: 2rem;
+  padding: 10%;
 }
 
-.project-pic {
-  width: 30%;
-  height: 45%;
-  margin: auto;
-
-  box-shadow: 0 4px 20px orange;
-  border-radius: .5rem;
-  overflow: hidden;
-}
-.project-pic{
-  transition: 1s;
-  cursor: pointer;
-}
-.project-pic:hover{
-  transform: scale(1.1);
-}
-
-.projects-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-}
-.projects-title {
-  text-align: center;
-  margin-bottom: 1rem;
-  
-}
-
-.project-container {
-  text-align: center;
-  width: 21.875rem;
-  padding: 1rem;
-  color: black;
-}
-.project-container p {
-  padding: 0.4rem;
-}
-
-.project-title {
-  margin-bottom: var(--bottom-margin);
-}
-
-.project-details {
-  margin-bottom: var(--bottom-margin);
-  
-}
-
-.project-card {
-  border-radius: 11px;
-  box-shadow: 0 3px 10px rgb(56, 55, 55);
-  padding: 20px;
-  margin: 10px;
-}
-
-/* ===== INSIGHT =====*/
-.insight{
-  text-align: center;
-}
-
-.LOGO{
-  height: 40px;
-  padding-left: 20px;
+.card{
+  margin: 5%;
 }
